@@ -3,6 +3,7 @@
 use App\Http\Controllers\QCMController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +26,9 @@ Route::prefix('/question')->controller(QuestionController::class)->group(functio
 
 Route::prefix('/qcm')->controller(QCMController::class)->group(function(){
     Route::get('/create-qcm','create')->name('create-qcm');
+    Route::post('/store-qcm',function(Request $request ){
+        dd($request);
+    })->name('store_qcm');
 });
 
 
