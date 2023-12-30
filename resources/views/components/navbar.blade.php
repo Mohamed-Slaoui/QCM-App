@@ -10,7 +10,7 @@
                                     <a href="{{ route('questions') }}" class="text-gray-200 hover:text-white">Questions</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('qcm') }}" class="text-gray-200 hover:text-white">Quizzes</a>
+                                    <a href="{{ route('create-qcm') }}" class="text-gray-200 hover:text-white">Quizzes</a>
                                 </li>
                             @endif
                         @endauth

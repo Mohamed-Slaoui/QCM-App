@@ -10,9 +10,11 @@
 
 <body class="bg-gray-100">
     @include('components.navbar')
-    <div class="mx-[10%]">
+    <div class="mx-[5%]">
         @yield('content')
     </div>
+
+    @yield('script')
 </body>
 
 </html>

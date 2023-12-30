@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QCMController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -13,15 +14,20 @@ Route::prefix('/question')->controller(QuestionController::class)->group(functio
 
     Route::get('/all','show')->name('questions');
     Route::post('/create','create')->name('create');
-    Route::put('/edit/{id}','edit')->name('edit');
-    // Route::put('/delete/{id}','delete')->name('delete');
+    Route::get('/edit/{id}','edit')->name('edit');
+    Route::put('/update/{id}','update')->name('update');
+    Route::delete('/delete/{id}','delete')->name('delete');
 
 
     
 });
 
 
-Route::get('/qcm',function(){ return view('qcm');})->name('qcm');
+Route::prefix('/qcm')->controller(QCMController::class)->group(function(){
+    Route::get('/create-qcm','create')->name('create-qcm');
+});
+
+
 // -----------Authentification---------------
 Route::get('/login', function(){
     return view('login');

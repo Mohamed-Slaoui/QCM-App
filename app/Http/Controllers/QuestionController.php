@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -13,11 +14,7 @@ class QuestionController extends Controller
         return view('questions',compact('questions'));
     }
 
-    public function create(Request $request){
-        $request->validate([
-            'question',
-            'user_id',
-        ]);
+    public function create(QuestionRequest $request){
 
         Question::create([
             'question' => $request->question,
@@ -27,21 +24,46 @@ class QuestionController extends Controller
         $questions = Question::orderBy('id', 'desc')->get();
         
         return redirect()->route('questions')->with([
-            'questions' => $questions
+            'questions' => $questions,
+            'success' => 'Question created successfully'
         ]);
     }
 
 
     public function edit($id){
         $question = Question::find($id);
-        
-        return view('questions',compact('question'));
+        $questions = Question::orderBy('id', 'desc')->get();
+
+        return view('questions',compact('questions','question'));
     }
-    // public function delete(){
-    //     $questions = Question::orderBy('id', 'desc')->get();
+
+    public function update(QuestionRequest $request, $id){
+
+        $question = Question::find($id);
+        $questions = Question::orderBy('id', 'desc')->get();
+
+        $question->update([
+            'question' => $request->question,
+            'user_id' => $request->user_id,
+        ]);
+
+        return redirect()->route('questions')->with([
+            'questions' => $questions,
+            'success' => 'Question updated successfully'
+        ]);
         
-    //     return view('questions',compact('questions'));
-    // }
+    }
+
+    public function delete($id){
+        $questions = Question::orderBy('id', 'desc')->get();
+        $question = Question::find($id);
+        $question->delete();
+
+        return redirect()->route('questions')->with([
+            'questions' => $questions,
+            'success' => 'Question deleted successfully'
+        ]);
+    }
 
 
 }
