@@ -12,6 +12,7 @@ class UserController extends Controller
 {
     public function addUser(UserRegisterRequest $request){
         User::create([
+            'name' => $request->name,
             'email' => $request->email,
             'role_id'=> $request->role_id,
             'password' => $request->password,
@@ -34,34 +35,6 @@ class UserController extends Controller
     public function logout(){
         Auth::logout();
         return redirect()->route('home');
-    }
-
-    // --------------pages--------------------
-
-    public function showUsers(){
-        $users = User::where('role_id',2)->get();
-        return view('users.usersPage',compact('users'));
-    }
-
-    public function myFiles($id=null){
-
-        if ($id !== null) {
-            
-            $docs = User::with('documents')->findOrFail($id);
-            return view('docs.myFiles', compact('docs'));
-        } else {
-            $docs = User::with('documents')->get();
-            return view('docs.adminFiles', compact('docs'));
-        }
-    }
-
-    public function deleteUser($id){
-        $user = User::find($id);
-
-        $user->delete();
-        return redirect()->back()->with([
-            'success' => 'user has been successfully deleted'
-        ]);
     }
 
 }

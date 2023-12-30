@@ -10,7 +10,7 @@
 
 <body class="bg-gray-100">
     @include('components.navbar')
-    <div>
+    <div class="mx-[10%]">
         @yield('content')
     </div>
 </body>
