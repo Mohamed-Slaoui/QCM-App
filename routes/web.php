@@ -26,9 +26,6 @@ Route::prefix('/question')->controller(QuestionController::class)->group(functio
 
 Route::prefix('/qcm')->controller(QCMController::class)->group(function(){
     Route::get('/create-qcm','create')->name('create-qcm');
-    Route::post('/store-qcm',function(Request $request ){
-        dd($request);
-    })->name('store_qcm');
 });
 
 
