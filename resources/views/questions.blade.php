@@ -21,10 +21,10 @@
         </div>
     @endif
     
-    <div class="w-full flex justify-center p-2 space-x-2">
+    <div class="w-full flex justify-center space-x-2">
 
-        <section class="border w-1/3 h-64 border-gray-500 p-3 border-dashed rounded-lg">
-            <h2 class="text-2xl font-bold mb-4">Question Creation</h2>
+        <section class="border w-1/3 h-64 p-3 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4 text-center">Question Creation</h2>
             <form action="{{ isset($question) ? route('update', $question->id) : route('create') }}" method="POST">
                 @csrf
                 @if (isset($question))
@@ -32,10 +32,10 @@
                 @endif
                 <div class="mb-4">
                     <label for="question" class="block text-gray-700">Question</label>
-                    <input type="text" id="question" name="question" class="w-full border p-2"
+                    <input type="text" id="question" name="question" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value="{{ isset($question) ? $question->question : '' }}">
                     @error('question')
-                        <p class="text-red-600">{{ $message }}</p>
+                        <p class="text-red-600 text-xs">{{ $message }}</p>
                     @enderror
                 </div>
                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
@@ -45,8 +45,9 @@
             </form>
         </section>
 
-        <section class="border w-1/2 border-gray-500 p-3 border-dashed rounded-lg">
-            <h2 class="text-2xl font-bold mb-4">All Questions</h2>
+        <section class="border  p-3 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4 text-center">All Questions</h2>
+            
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>

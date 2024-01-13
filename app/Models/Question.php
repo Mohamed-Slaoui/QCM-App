@@ -12,4 +12,12 @@ class Question extends Model
     public function user(){
         $this->belongsTo(User::class);
     }
+
+    public function answers(){
+        return $this->hasMany(Answer::class);
+    }
+
+    public function quizzes(){
+        return $this->belongsTo(QCM::class);
+    }
 }

@@ -44,7 +44,7 @@ class User extends Authenticatable
     ];
 
     public function role(){
-        $this->hasOne(Role::class);
+        $this->belongsTo(Role::class);
     }
 
     public function questions(){

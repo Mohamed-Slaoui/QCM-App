@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\QCM;
+use App\Models\Question;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,9 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('q_c_m_s', function (Blueprint $table) {
+        Schema::create('q_c_m_question', function (Blueprint $table) {
             $table->id();
-            $table->string('quiz_name');
+            $table->foreignIdFor(Question::class);
+            $table->foreignIdFor(QCM::class);
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('q_c_m_s');
+        Schema::dropIfExists('q_c_m_question');
     }
 };

@@ -3,12 +3,14 @@
 use App\Http\Controllers\QCMController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use App\Models\QCM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',function(){
-    return view('home');
+    $quizzes = QCM::all();
+    return view('home',compact('quizzes'));
 })->name('home');
 
 Route::prefix('/question')->controller(QuestionController::class)->group(function(){
@@ -26,7 +28,11 @@ Route::prefix('/question')->controller(QuestionController::class)->group(functio
 
 Route::prefix('/qcm')->controller(QCMController::class)->group(function(){
     Route::get('/create-qcm','create')->name('create-qcm');
+    Route::post('/store','store')->name('store');
+    Route::get('/pass-quiz/{id}','passQuiz')->name('pass-quiz');
+    Route::post('/submit-quiz','submitQuiz')->name('submit-quiz');
 });
+
 
 
 // -----------Authentification---------------
