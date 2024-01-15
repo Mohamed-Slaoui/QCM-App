@@ -9,14 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',function(){
-    $quizzes = QCM::with(['grades' => function ($query) {
-        $query->where('user_id', auth()->id());
-    }])
-    ->orderBy('created_at', 'desc')
-    ->take(4)
-    ->get();
-
-    // dd($quizzes[0]->grades[0]->isDone);
+    $quizzes = QCM::orderBy('created_at', 'desc')->take(4)->get();
     return view('home',compact('quizzes'));
 })->name('home');
 

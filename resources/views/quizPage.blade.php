@@ -12,9 +12,18 @@
             <div class="flex justify-center">
                 <div class="mt-6 flex flex-col space-y-5 border rounded border-gray-300 w-2/3 p-2">
                     <div class="flex flex-col gap-1">
-                        <span class="text-sm text-center text-red-500">
-                            {{ $quiz_data['isDone'] == null ? 'You have already taken this quiz' : '+1 points for every correct answer'}}
+                        <span class="text-sm text-center text-red-700">
+                            @if (isset($quiz_data['grades']) && is_array($quiz_data['grades']) && count($quiz_data['grades']) > 0)
+                                @foreach ($quiz_data['grades'] as $grade)
+                                    {{ isset($grade['isDone']) ? 'You have already taken this quiz' : '' }}
+                                @endforeach
+                            @else
+                                <p>+1 points for every correct answer</p>
+                            @endif
                         </span>
+
+
+
                     </div>
 
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
@@ -29,7 +38,8 @@
 
                             @foreach ($q['answers'] as $a)
                                 <div class="ml-4">
-                                    <input type="checkbox" name="answers[]" value="{{ $a['id'] }}"  {{ $quiz_data['isDone'] == null ? 'disabled' : '' }} {{ Auth::user()->role_id == 1 ? "disabled" : ""}}
+                                    <input type="checkbox" name="answers[]" value="{{ $a['id'] }}"
+                                        {{ Auth::user()->role_id == 1 ? 'disabled' : '' }}
                                         class="w-4 h-4 disabled:cursor-not-allowed text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <span>{{ $a['answer'] }}</span>
                                 </div>
@@ -37,10 +47,16 @@
                         </div>
                     @endforeach
 
-                    @if (Auth::user()->role_id == 2 && !$quiz_data['isDone'] == null )
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white w-20 mt-5 py-1 px-2 rounded">
-                            Submit
-                        </button>
+                    @if (Auth::user()->role_id == 2)
+                        @if (isset($quiz_data['grades']) && is_array($quiz_data['grades']) && count($quiz_data['grades']) > 0)
+                            @foreach ($quiz_data['grades'] as $grade)
+                                {{ isset($grade['isDone']) ? '' : '' }}
+                            @endforeach
+                        @else
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white w-20 mt-5 py-1 px-2 rounded">
+                                Submit
+                            </button>
+                        @endif
                     @endif
 
                 </div>
@@ -49,7 +65,8 @@
         </form>
     @endauth
     @guest
-        <h1 class="m-2 text-center">Please <a href="{{ route('login') }}" class="underline text-blue-600">Login</a> to pass this
+        <h1 class="m-2 text-center">Please <a href="{{ route('login') }}" class="underline text-blue-600">Login</a> to pass
+            this
             quiz</h1>
     @endguest
 @endsection

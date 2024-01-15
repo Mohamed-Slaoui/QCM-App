@@ -24,6 +24,14 @@
                     <a href="{{ route('pass-quiz', $quiz->id) }}" class="">
                         <img src="{{ asset('images/quiz.png') }}" class=" m-1" width="55px" alt="">
                         <h1 class="text-gray-600">{{ $quiz->quiz_name }}</h1>
+
+                        @auth
+                            @foreach ($quiz->grades as $grade)
+                                @if (Auth::user()->id === $grade->user_id)
+                                    <span class="text-xs font-medium">Status: <p class="inline font-light">{{ $grade->isDone ? "Done" : "Undone" }}</p></span>
+                                @endif
+                            @endforeach
+                        @endauth
                     </a>
                 </div>
             @endforeach
