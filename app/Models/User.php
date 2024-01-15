@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function questions(){
         $this->hasMany(Question::class);
     }
+
+    public function grades(){
+        return $this->hasMany(Grade::class);
+    }
 }

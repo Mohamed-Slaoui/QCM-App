@@ -9,7 +9,14 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',function(){
-    $quizzes = QCM::all();
+    $quizzes = QCM::with(['grades' => function ($query) {
+        $query->where('user_id', auth()->id());
+    }])
+    ->orderBy('created_at', 'desc')
+    ->take(4)
+    ->get();
+
+    // dd($quizzes[0]->grades[0]->isDone);
     return view('home',compact('quizzes'));
 })->name('home');
 
@@ -51,4 +58,7 @@ Route::prefix('/')->controller(UserController::class)->group(function(){
     Route::post('logUser', 'logUser')->name('logUser');
     
     Route::get('logout','logout')->name('logout');
+
+    Route::get('/students','showStudents')->name('students');
+
 });

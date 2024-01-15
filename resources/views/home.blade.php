@@ -7,13 +7,28 @@
 
 @section('content')
     <!-- Page Content -->
-    <div class="flex space-x-1">
-        @foreach ($quizzes as $quiz)
-            <a href="{{ route('pass-quiz', $quiz->id) }}"
-                class="m-1 border flex flex-col space-y-2 justify-center items-center rounded hover:bg-gray-50 p-2 h-32 w-32 text-center">
-                <img src="{{ asset('images/quiz.png') }}" class=" m-1" width="55px" alt="">
-                <h1 class="text-gray-600">{{ $quiz->quiz_name }}</h1>
-            </a>
-        @endforeach
+    <div class="space-y-5">
+        @auth
+            @if (Auth::user()->role_id == 1)
+                <h1 class="font-medium text-3xl ">Created QCMs</h1>
+            @endif
+        @endauth
+        @guest
+            <h1 class="font-medium text-3xl ">All QCMs</h1>
+        @endguest
+        <div class="flex space-x-1">
+
+            @foreach ($quizzes as $quiz)
+                <div
+                    class="flex border m-1 flex-col space-y-2 justify-center items-center rounded hover:bg-gray-50 p-2 h-32 w-32 text-center">
+                    <a href="{{ route('pass-quiz', $quiz->id) }}" class="">
+                        <img src="{{ asset('images/quiz.png') }}" class=" m-1" width="55px" alt="">
+                        <h1 class="text-gray-600">{{ $quiz->quiz_name }}</h1>
+                    </a>
+                </div>
+            @endforeach
+
+
+        </div>
     </div>
 @endsection

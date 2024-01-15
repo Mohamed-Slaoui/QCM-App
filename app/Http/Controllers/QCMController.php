@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Grade;
 use App\Models\QCM;
 use App\Models\Question;
+use Hamcrest\Type\IsDouble;
 use Illuminate\Http\Request;
 
 class QCMController extends Controller
@@ -48,12 +50,14 @@ class QCMController extends Controller
 
     public function passQuiz($id)
     {
-        $qcm = QCM::with('questions.answers')->find($id);
+        $qcm = QCM::with('questions.answers', 'grades')->find($id);
 
         $quizName = $qcm->quiz_name;
 
         $quiz_data = [
+            'quiz_id' => $id,
             'quiz_name' => $quizName,
+            'grades' => $qcm->grades->toArray(),
             'questions' => $qcm->questions->map(function ($q) {
                 return [
                     'question' => $q->question,
@@ -71,7 +75,26 @@ class QCMController extends Controller
         return view('quizPage', compact('quiz_data'));
     }
 
-    public function submitQuiz(Request $request){
-        dd($request->questions);
+
+    public function submitQuiz(Request $request)
+    {
+
+        $counter = 0;
+        if ($request->answers) {
+            foreach ($request->answers as $answer) {
+                $correctAnswerId = Answer::find($answer)->isCorrect;
+                if ($correctAnswerId) {
+                    $counter += 1;
+                }
+            }
+        }
+        Grade::create([
+            'user_id' => $request->user_id,
+            'q_c_m_id' => $request->quiz_id,
+            'grade' => $counter,
+            'isDone' => 1
+        ]);
+
+        return redirect()->route('home');
     }
 }

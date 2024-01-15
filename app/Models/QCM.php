@@ -15,4 +15,8 @@ class QCM extends Model
     public function questions(){
         return $this->belongsToMany(Question::class);
     }
+
+    public function grades(){
+        return $this->hasMany(Grade::class);
+    }
 }
