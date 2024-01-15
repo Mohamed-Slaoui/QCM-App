@@ -15,7 +15,7 @@
                         <span class="text-sm text-center text-red-700">
                             @if (isset($quiz_data['grades']) && is_array($quiz_data['grades']) && count($quiz_data['grades']) > 0)
                                 @foreach ($quiz_data['grades'] as $grade)
-                                    {{ isset($grade['isDone']) ? 'You have already taken this quiz' : '' }}
+                                    {{ isset($grade['isDone']) && $grade['user_id'] == Auth::user()->id ? 'You have already taken this quiz' : '' }}
                                 @endforeach
                             @else
                                 <p>+1 points for every correct answer</p>
@@ -28,6 +28,27 @@
 
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <input type="hidden" name="quiz_id" value="{{ $quiz_data['quiz_id'] }}">
+
+
+                    {{--  --}}
+
+                    @if (isset($quiz_data['grades']) && is_array($quiz_data['grades']) && count($quiz_data['grades']) > 0)
+                            @foreach ($quiz_data['grades'] as $grade)
+                                @if (!isset($grade['isDone']) && $grade['user_id'] != Auth::user()->id)
+                                    <button type="submit"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white w-20 mt-5 py-1 px-2 rounded">
+                                        Submit
+                                    </button>
+                                @endif
+                            @endforeach
+                        @else
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white w-20 mt-5 py-1 px-2 rounded">
+                                Submit
+                            </button>
+                        @endif
+
+
+                    {{--  --}}
 
                     @foreach ($quiz_data['questions'] as $index => $q)
                         <div class="">
@@ -50,7 +71,12 @@
                     @if (Auth::user()->role_id == 2)
                         @if (isset($quiz_data['grades']) && is_array($quiz_data['grades']) && count($quiz_data['grades']) > 0)
                             @foreach ($quiz_data['grades'] as $grade)
-                                {{ isset($grade['isDone']) ? '' : '' }}
+                                @if (!isset($grade['isDone']) && $grade['user_id'] != Auth::user()->id)
+                                    <button type="submit"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white w-20 mt-5 py-1 px-2 rounded">
+                                        Submit
+                                    </button>
+                                @endif
                             @endforeach
                         @else
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white w-20 mt-5 py-1 px-2 rounded">
@@ -65,8 +91,10 @@
         </form>
     @endauth
     @guest
-        <h1 class="m-2 text-center">Please <a href="{{ route('login') }}" class="underline text-blue-600">Login</a> to pass
-            this
-            quiz</h1>
+        <h1 class="m-2 text-center"></h1>
+
+        <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300" role="alert">
+            <span class="font-medium">Please <a href="{{ route('login') }}" class="underline text-gray-600">Login</a> to pass this quiz</span>
+        </div>
     @endguest
 @endsection

@@ -15,7 +15,7 @@
     @endif
 
     <main class="ml-1/5 p-4">
-        <div class="container mx-auto">
+        <div class="mx-auto">
 
             <h1 class="text-3xl font-semibold mb-4">Create QCM Quiz</h1>
 
@@ -24,7 +24,8 @@
                 @csrf
                 <div class="mb-4">
                     <label for="quiz-name" class="block text-gray-700 font-semibold">Quiz Name:</label>
-                    <input type="text" name="quiz_name" id="quiz-name" class="w-full px-4 py-2 border rounded-md">
+                    <input type="text" name="quiz_name" id="quiz-name"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
 
                 <div id="questions-container">
@@ -48,14 +49,14 @@
 
         function addQuestion() {
             questionCounter++;
-
+            answerCounter = 0;
             const container = document.getElementById('questions-container');
 
             const questionDiv = document.createElement('div');
             questionDiv.innerHTML = `
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold">Question ${questionCounter}:</label>
-                    <select name="questions[${questionCounter}][question]" id="" class="w-full px-4 py-2 border rounded-md">
+                    <select name="questions[${questionCounter}][question]" id="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">----select a question-----</option>
                             @foreach ($questions as $q)
                                 <option value="{{ $q->id }}">{{ $q->question }}</option>
@@ -81,12 +82,12 @@
         <div class="ml-4">
             <h1>Answer ${answerCounter}</h1>
             
-            <div class="mb-4 ml-10 flex">
-                <input type="text" name="questions[${questionNumber}][answers][${answerCounter}][answer]" class="w-full px-4 py-2 inline border rounded-md">
+            <div class="mb-4 ml-4 space-x-2 flex w-full">
+                <input type="text" name="questions[${questionNumber}][answers][${answerCounter}][answer]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 
                 <div class="flex items-center">
-                    <input type="checkbox" name="questions[${questionNumber}][answers][${answerCounter}][correct]" class="inline px-2 mx-1">
-                    <p>correct?</p>
+                    <input type="checkbox" name="questions[${questionNumber}][answers][${answerCounter}][correct]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <p class="mb-1 pl-1">correct?</p>
                 </div>
             </div>
         </div>

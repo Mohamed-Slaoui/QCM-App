@@ -21,9 +21,9 @@
         </div>
     @endif
     
-    <div class="w-full flex justify-center space-x-2">
+    <div class="w-full xs:space-y-2 flex-col flex justify-center">
 
-        <section class="border w-1/3 h-64 p-3 rounded-lg">
+        <section class="border xs:w-full w-1/3 h-fit p-3 rounded-lg">
             <h2 class="text-2xl font-bold mb-4 text-center">Question Creation</h2>
             <form action="{{ isset($question) ? route('update', $question->id) : route('create') }}" method="POST">
                 @csrf
@@ -45,21 +45,18 @@
             </form>
         </section>
 
-        <section class="border  p-3 rounded-lg">
+        <section class="border lg:p-3 rounded-lg">
             <h2 class="text-2xl font-bold mb-4 text-center">All Questions</h2>
             
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table class="w-full lg:text-base xs:text-xs text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
-                            #
-                        </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="xs:px-1 lg:px-4 py-3">
                             Questions
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="xs:px-1 lg:px-4 py-3">
                             Action
                         </th>
                     </tr>
@@ -68,17 +65,13 @@
                     @foreach ($questions as $q)
                         <tr
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $q->id }}
-                            </th>
 
                             <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                class="xs:px-1 lg:px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $q->question }}
                             </th>
 
-                            <td class="px-6 py-4 space-x-3 flex">
+                            <td class="xs:px-1 lg:px-4 py-4 space-x-3 flex">
                                 <a href="{{ route('edit', $q->id) }}"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
 
