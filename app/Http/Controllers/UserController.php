@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Grade;
+use App\Models\QCM;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,9 +46,21 @@ class UserController extends Controller
 
     public function showStudents()
     {
-        // $students = User::with(['grades.quiz'])->where('role_id', 2)->get();
-        $students = Grade::with('user')->get();
+        $quizzes = QCM::all();
+        $students = Grade::with('user')
+            ->orderBy('q_c_m_id')
+            ->get();
 
-        return view('students', compact('students'));
+        return view('students', compact('students','quizzes'));
+    }
+
+    public function filter($id){
+        $quizzes = QCM::all();
+        $students = Grade::with('user')
+            ->where('q_c_m_id',$id)
+            ->orderBy('q_c_m_id')
+            ->get();
+
+        return view('students', compact('students','quizzes'));
     }
 }

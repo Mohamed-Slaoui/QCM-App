@@ -1,4 +1,8 @@
 @extends('layout')
+@section('title')
+    Mange Quizzes
+@endsection
+
 @section('content')
     @if (session('success'))
         <div class="flex items-center p-4 mb-4 text-sm text-green-900 border border-green-900 rounded-lg bg-green-200 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
@@ -14,13 +18,11 @@
         </div>
     @endif
 
-    <main class="ml-1/5 p-4">
-        <div class="mx-auto">
-
-            <h1 class="text-3xl font-semibold mb-4">Create QCM Quiz</h1>
-
+    <div class="flex flex-col space-y-2 items-center">
+        <div class="w-full flex flex-col items-center p-3 border rounded-lg">
+            <h2 class="text-2xl font-bold mb-4 text-center">Create QCM Quiz</h2>
             <!-- QCM Quiz Form -->
-            <form action="{{ route('store') }}" method="post" class="w-2/3 space-y-3">
+            <form action="{{ route('store') }}" method="post" class="w-full space-y-3">
                 @csrf
                 <div class="mb-4">
                     <label for="quiz-name" class="block text-gray-700 font-semibold">Quiz Name:</label>
@@ -32,14 +34,58 @@
 
                 </div>
 
-                <button type="button" onclick="addQuestion()"
-                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Question</button>
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Create
-                    Quiz</button>
+                <div>
+                    <button type="button" onclick="addQuestion()"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Question</button>
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Create
+                        Quiz</button>
+                </div>
             </form>
-
         </div>
-    </main>
+
+        <div class="w-full flex flex-col items-center p-3 border rounded-lg">
+            <h2 class="text-2xl font-bold mb-4 text-center">All Quizzes</h2>
+
+            <table class="w-full lg:text-base text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+
+                        <th scope="col" class="xs:px-1 lg:px-4 py-3">
+                            Quiz Name
+                        </th>
+
+                        <th scope="col" class="xs:px-1 lg:px-4 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($quizzes as $q)
+                        <tr
+                            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+
+                            <th scope="row"
+                                class="xs:px-1 lg:px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $q->quiz_name }}
+                            </th>
+
+                            <td class="xs:px-1 lg:px-4 py-4 space-x-3 flex">
+                                <a href="{{ route('edit-qcm', $q->id) }}"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    
+                                <form action="{{ route('delete', $q->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="font-medium text-red-600 dark:text-red-500 hover:underline"
+                                        type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection
 
 @section('script')

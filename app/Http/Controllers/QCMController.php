@@ -8,13 +8,16 @@ use App\Models\QCM;
 use App\Models\Question;
 use Hamcrest\Type\IsDouble;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QCMController extends Controller
 {
     public function create()
     {
         $questions = Question::all();
-        return view('qcm', compact('questions'));
+        $quizzes = QCM::all();
+
+        return view('qcm', compact('questions', 'quizzes'));
     }
 
     public function store(Request $request)
@@ -52,27 +55,40 @@ class QCMController extends Controller
     {
         $qcm = QCM::with('questions.answers', 'grades')->find($id);
 
-        $quizName = $qcm->quiz_name;
+        $user_id = auth()->user()->id;
+        $is_done = Grade::where('user_id', $user_id)
+            ->where('q_c_m_id', $id)
+            ->first();
 
-        $quiz_data = [
-            'quiz_id' => $id,
-            'quiz_name' => $quizName,
-            'grades' => $qcm->grades->toArray(),
-            'questions' => $qcm->questions->map(function ($q) {
-                return [
-                    'question' => $q->question,
-                    'answers' => $q->answers->map(function ($answer) {
-                        return [
-                            'id' => $answer->id,
-                            'answer' => $answer->answer,
-                            'isCorrect' => $answer->isCorrect,
-                        ];
-                    }),
-                ];
-            }),
-        ];
 
-        return view('quizPage', compact('quiz_data'));
+        if ($is_done) {
+            return redirect()->back()->with([
+                'message' => 'You have already taken this quiz!'
+            ]);
+        } else {
+
+
+            $quizName = $qcm->quiz_name;
+
+            $quiz_data = [
+                'quiz_id' => $id,
+                'quiz_name' => $quizName,
+                'questions' => $qcm->questions->map(function ($q) {
+                    return [
+                        'question' => $q->question,
+                        'answers' => $q->answers->map(function ($answer) {
+                            return [
+                                'id' => $answer->id,
+                                'answer' => $answer->answer,
+                                'isCorrect' => $answer->isCorrect,
+                            ];
+                        }),
+                    ];
+                }),
+            ];
+
+            return view('quizPage', compact('quiz_data'));
+        }
     }
 
 
@@ -96,5 +112,14 @@ class QCMController extends Controller
         ]);
 
         return redirect()->route('home');
+    }
+
+    public function editQuiz($id)
+    {
+
+        $qcm = QCM::with('questions.answers')->find($id);
+        $questions = Question::all();
+
+        return view('editQuiz', compact('qcm','questions'));
     }
 }

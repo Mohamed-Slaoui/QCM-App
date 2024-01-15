@@ -5,17 +5,28 @@
 @endsection
 
 @section('content')
-    <h1 class="text-3xl font-medium mb-7">Students</h1>
+    <h1 class="text-3xl font-medium">Students</h1>
 
 
     <div class="w-full">
+        <div class="mb-6 mt-3">
+            <hr class="mb-1">
+            <a href="{{ route('students') }}" class="mr-1">
+                
+                <kbd class="px-2 py-1.5 hover:bg-gray-200 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">all</kbd>
+            </a>
+            @foreach ($quizzes as $q)
+                <a href="{{ route('filter', $q->id) }}">
+                    <kbd
+                        class="px-2 py-1.5 hover:bg-gray-200 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">{{ $q->quiz_name }}</kbd>
+                </a>
+            @endforeach
+            <hr class="mt-2.5">
+        </div>
         @if (count($students))
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-2 py-3">
-                            #
-                        </th>
                         <th scope="col" class="px-2 py-3">
                             Name
                         </th>
@@ -34,11 +45,7 @@
                     @foreach ($students as $student)
                         <tr
                             class="bg-white hover:bg-gray-50 hover:cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $student->user->id }}
 
-                            </th>
                             <td class="px-2 py-4">
                                 {{ $student->user->name }}
                             </td>
@@ -66,7 +73,7 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div>
-                    <span class="font-medium">No one have taken any quizzes yet !</span>
+                    <span class="font-medium">No one have taken this quiz yet !</span>
                 </div>
             </div>
         @endif

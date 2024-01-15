@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    Questions
+    Manage Questions
 @endsection
 
 

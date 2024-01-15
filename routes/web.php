@@ -31,6 +31,7 @@ Route::prefix('/qcm')->controller(QCMController::class)->group(function(){
     Route::post('/store','store')->name('store');
     Route::get('/pass-quiz/{id}','passQuiz')->name('pass-quiz');
     Route::post('/submit-quiz','submitQuiz')->name('submit-quiz');
+    Route::get('/edit/{id}','editQuiz')->name('edit-qcm');
 });
 
 
@@ -45,13 +46,9 @@ Route::get('/register', function(){
 })->name('register');
 
 Route::prefix('/')->controller(UserController::class)->group(function(){
-
-    Route::post('addUser','addUser')->name('addUser');
-    
-    Route::post('logUser', 'logUser')->name('logUser');
-    
+    Route::post('addUser','addUser')->name('addUser');    
+    Route::post('logUser', 'logUser')->name('logUser');    
     Route::get('logout','logout')->name('logout');
-
     Route::get('/students','showStudents')->name('students');
-
+    Route::get('/filter/{id}','filter')->name('filter');
 });

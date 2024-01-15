@@ -16,8 +16,14 @@
         @guest
             <h1 class="font-medium text-3xl ">All QCMs</h1>
         @endguest
-        <div class="flex space-x-1">
 
+        @if (session('message'))
+            <div class="p-4 text-center mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <span class="font-medium">{{ session('message') }}</span>
+            </div>
+        @endif
+
+        <div class="flex space-x-1">
             @foreach ($quizzes as $quiz)
                 <div
                     class="flex border m-1 flex-col space-y-2 justify-center items-center rounded hover:bg-gray-50 p-2 h-32 w-32 text-center">
@@ -28,7 +34,8 @@
                         @auth
                             @foreach ($quiz->grades as $grade)
                                 @if (Auth::user()->id === $grade->user_id)
-                                    <span class="text-xs font-medium">Status: <p class="inline font-light">{{ $grade->isDone ? "Done" : "Undone" }}</p></span>
+                                    <span class="text-xs text-red-600 font-medium">Status: <p class="inline font-light">
+                                            {{ $grade->isDone ? 'Done' : 'Undone' }}</p></span>
                                 @endif
                             @endforeach
                         @endauth
