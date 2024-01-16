@@ -134,17 +134,29 @@ class QCMController extends Controller
 
         $qcm = QCM::with('questions.answers')->where('id', $id)->first();
 
+        // dd($qcm->questions[0]->pivot);
+
+        $qcm->update([
+            'quiz_name' => $request->quiz_name
+        ]);
+
         $questions = Question::all();
         $quizzes = QCM::all();
 
         foreach ($qcm->questions as $index => $question) {
 
-            foreach ($question->answers as $i => $answer) {
-                $a = Answer::where('question_id',$question->id);
+            $question->pivot->update([
+                'question_id' => $request->questions[$index]['question'],
+                'q_c_m_id' => $id
+            ]);
 
+            foreach ($question->answers as $i => $answer) {
+                $a = Answer::where('question_id',$question->id)->first();
+                
                 $a->update([
                     'question_id' => $request->questions[$index]['question'],
                     'answer' => $request->questions[$index]['answers'][$i]['answer'],
+                    'isCorrect' => isset($request->questions[$index]['answers'][$i]['correct']) ? 1 : 0,
                 ]);
             }
         }
