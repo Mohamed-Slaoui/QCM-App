@@ -32,6 +32,7 @@ Route::prefix('/qcm')->controller(QCMController::class)->group(function(){
     Route::get('/pass-quiz/{id}','passQuiz')->name('pass-quiz');
     Route::post('/submit-quiz','submitQuiz')->name('submit-quiz');
     Route::get('/edit/{id}','editQuiz')->name('edit-qcm');
+    Route::put('/update/{id}','updateQuiz')->name('update-qcm');
 });
 
 

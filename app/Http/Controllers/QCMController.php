@@ -22,6 +22,12 @@ class QCMController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'quiz_name' => 'required',
+        ]);
+
+
+
         $questions = Question::all();
         $quiz = QCM::create([
             'quiz_name' => $request->input('quiz_name')
@@ -120,6 +126,29 @@ class QCMController extends Controller
         $qcm = QCM::with('questions.answers')->find($id);
         $questions = Question::all();
 
-        return view('editQuiz', compact('qcm','questions'));
+        return view('editQuiz', compact('qcm', 'questions'));
+    }
+
+    public function updateQuiz(Request $request, $id)
+    {
+
+        $qcm = QCM::with('questions.answers')->where('id', $id)->first();
+
+        $questions = Question::all();
+        $quizzes = QCM::all();
+
+        foreach ($qcm->questions as $index => $question) {
+
+            foreach ($question->answers as $i => $answer) {
+                $a = Answer::where('question_id',$question->id);
+
+                $a->update([
+                    'question_id' => $request->questions[$index]['question'],
+                    'answer' => $request->questions[$index]['answers'][$i]['answer'],
+                ]);
+            }
+        }
+
+        return redirect()->route('create-qcm')->with(['questions', 'quizzes']);
     }
 }

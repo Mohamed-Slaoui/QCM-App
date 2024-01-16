@@ -28,6 +28,10 @@
                     <label for="quiz-name" class="block text-gray-700 font-semibold">Quiz Name:</label>
                     <input type="text" name="quiz_name" id="quiz-name"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                    @error('quiz_name')
+                        <p class="text-xs text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div id="questions-container">
@@ -72,7 +76,7 @@
                             <td class="xs:px-1 lg:px-4 py-4 space-x-3 flex">
                                 <a href="{{ route('edit-qcm', $q->id) }}"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                    
+
                                 <form action="{{ route('delete', $q->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
