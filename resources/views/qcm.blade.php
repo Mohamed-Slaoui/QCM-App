@@ -5,7 +5,7 @@
 
 @section('content')
     @if (session('success'))
-        <div class="flex items-center p-4 mb-4 text-sm text-green-900 border border-green-900 rounded-lg bg-green-200 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+        <div class="flex items-center p-4 mb-4 text-sm text-green-900 border border-green-300 rounded-lg bg-green-200 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
             role="alert">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor" viewBox="0 0 20 20">
@@ -77,7 +77,7 @@
                                 <a href="{{ route('edit-qcm', $q->id) }}"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
 
-                                <form action="{{ route('delete', $q->id) }}" method="post">
+                                <form action="{{ route('deleteQuiz', $q->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button class="font-medium text-red-600 dark:text-red-500 hover:underline"

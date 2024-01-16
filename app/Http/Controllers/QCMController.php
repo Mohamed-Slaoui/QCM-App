@@ -161,6 +161,15 @@ class QCMController extends Controller
             }
         }
 
-        return redirect()->route('create-qcm')->with(['questions', 'quizzes']);
+        return redirect()->route('create-qcm')->with([
+            'questions',
+            'quizzes',
+            'success' => 'Quiz updated successfully !'
+        ]);
+    }
+
+
+    public function deleteQuiz($id){
+        
     }
 }
