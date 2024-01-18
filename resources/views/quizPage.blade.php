@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-    <h1 class="text-center font-medium text-3xl ">{{ $quiz_data['quiz_name'] }} Quiz</h1>
     @auth
+        <h1 class="text-center font-medium text-3xl ">{{ $quiz_data['quiz_name'] }} Quiz</h1>
         <form action="{{ route('submit-quiz') }}" method="POST" class="">
             @csrf
             <div class="flex justify-center">

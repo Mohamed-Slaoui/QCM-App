@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->string('answer');
-            $table->foreignIdFor(Question::class);
+            $table->foreignIdFor(Question::class)->constrained()->cascadeOnDelete();
             $table->boolean('isCorrect');
             $table->timestamps();
         });

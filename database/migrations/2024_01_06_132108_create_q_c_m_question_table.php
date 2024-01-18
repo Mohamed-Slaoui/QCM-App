@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('q_c_m_question', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Question::class);
-            $table->foreignIdFor(QCM::class);
+            $table->foreignId('q_c_m_id')->constrained('q_c_m_s')->cascadeOnDelete();
+            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
             $table->timestamps();
         });
     }

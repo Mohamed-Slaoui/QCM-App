@@ -53,7 +53,7 @@
                                 {{ $student->user->email }}
                             </td>
                             <td class="px-2 py-4">
-                                {{ $student->quiz->quiz_name }}
+                                {{ $student->quiz?->quiz_name }}
                             </td>
                             <td class="px-2 py-4">
                                 {{ $student->grade }} pts

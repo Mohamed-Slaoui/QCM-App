@@ -76,13 +76,6 @@
                             <td class="xs:px-1 lg:px-4 py-4 space-x-3 flex">
                                 <a href="{{ route('edit-qcm', $q->id) }}"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-
-                                <form action="{{ route('deleteQuiz', $q->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="font-medium text-red-600 dark:text-red-500 hover:underline"
-                                        type="submit">Delete</button>
-                                </form>
                             </td>
                         </tr>
                     @endforeach

@@ -59,43 +59,45 @@ class QCMController extends Controller
 
     public function passQuiz($id)
     {
-        $qcm = QCM::with('questions.answers', 'grades')->find($id);
+        if (auth()->check()) {
+            $qcm = QCM::with('questions.answers', 'grades')->find($id);
 
-        $user_id = auth()->user()->id;
-        $is_done = Grade::where('user_id', $user_id)
-            ->where('q_c_m_id', $id)
-            ->first();
+            $user_id = auth()->user()->id;
+            $is_done = Grade::where('user_id', $user_id)
+                ->where('q_c_m_id', $id)
+                ->first();
 
+            if ($is_done) {
+                return redirect()->back()->with([
+                    'message' => 'You have already taken this quiz!'
+                ]);
+            } else {
+                $quizName = $qcm->quiz_name;
 
-        if ($is_done) {
-            return redirect()->back()->with([
-                'message' => 'You have already taken this quiz!'
-            ]);
+                $quiz_data = [
+                    'quiz_id' => $id,
+                    'quiz_name' => $quizName,
+                    'questions' => $qcm->questions->map(function ($q) {
+                        return [
+                            'question' => $q->question,
+                            'answers' => $q->answers->map(function ($answer) {
+                                return [
+                                    'id' => $answer->id,
+                                    'answer' => $answer->answer,
+                                    'isCorrect' => $answer->isCorrect,
+                                ];
+                            }),
+                        ];
+                    }),
+                ];
+
+                return view('quizPage', compact('quiz_data'));
+            }
         } else {
-
-
-            $quizName = $qcm->quiz_name;
-
-            $quiz_data = [
-                'quiz_id' => $id,
-                'quiz_name' => $quizName,
-                'questions' => $qcm->questions->map(function ($q) {
-                    return [
-                        'question' => $q->question,
-                        'answers' => $q->answers->map(function ($answer) {
-                            return [
-                                'id' => $answer->id,
-                                'answer' => $answer->answer,
-                                'isCorrect' => $answer->isCorrect,
-                            ];
-                        }),
-                    ];
-                }),
-            ];
-
-            return view('quizPage', compact('quiz_data'));
+            return view('quizPage');
         }
     }
+
 
 
     public function submitQuiz(Request $request)
@@ -134,8 +136,6 @@ class QCMController extends Controller
 
         $qcm = QCM::with('questions.answers')->where('id', $id)->first();
 
-        // dd($qcm->questions[0]->pivot);
-
         $qcm->update([
             'quiz_name' => $request->quiz_name
         ]);
@@ -144,15 +144,15 @@ class QCMController extends Controller
         $quizzes = QCM::all();
 
         foreach ($qcm->questions as $index => $question) {
-
+            dd($question);
             $question->pivot->update([
                 'question_id' => $request->questions[$index]['question'],
                 'q_c_m_id' => $id
             ]);
 
             foreach ($question->answers as $i => $answer) {
-                $a = Answer::where('question_id',$question->id)->first();
-                
+                $a = Answer::where('question_id', $question->id)->first();
+
                 $a->update([
                     'question_id' => $request->questions[$index]['question'],
                     'answer' => $request->questions[$index]['answers'][$i]['answer'],
@@ -166,10 +166,5 @@ class QCMController extends Controller
             'quizzes',
             'success' => 'Quiz updated successfully !'
         ]);
-    }
-
-
-    public function deleteQuiz($id){
-        
     }
 }
